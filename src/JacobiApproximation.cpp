@@ -13,8 +13,10 @@ void JacobiApproximation::consolidateMatrix(int rank, double* matrix) {
     int begin_x = 0;
     int begin_y = 0;
 
-    if (rank % 2 == 1) begin_x = 1;
-    if (rank >= 2) begin_y = 1;
+    if (rank % 2 == 1)  // right 2 quadrants have an empty column on the left
+        begin_x = 1;
+    if (rank >= 2)  // bottom 2 quadrants have an empty row on the top
+        begin_y = 1;
 
     if (rank != 0)  // quadrants 1-3 will give their portion to rank 0
         MPI_Send(&matrix[(begin_y * maxn) + begin_x], 1, quarter_array_type, 0,
@@ -178,7 +180,7 @@ int JacobiApproximation::Approximate() {
     consolidateMatrix(rank, xlocal);
     if (rank == 0) {
         writeMatrix();
-        // printMatrix();
+        // printMatrix(); // if we want to see the resulting matrix
     }
 
     MPI_Finalize();
