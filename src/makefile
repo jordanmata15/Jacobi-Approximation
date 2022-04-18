@@ -6,6 +6,7 @@ LDLIBS=
 # keep our cpp/hpp files separate from .o and executable
 SRCDIR=.
 BUILD=../build
+SCRIPTING=../scripting
 
 SRC:=$(shell find $(SRCDIR)/ -name "*.cpp")
 OBJS:=$(SRC:%.cpp=$(BUILD)/%.o)
@@ -20,6 +21,9 @@ $(BUILD)/%.o: $(SRCDIR)/%.cpp $(SRCDIR)/%.hpp
 
 run:
 	mpirun -np 4 ${BUILD}/${PROGRAM}
+
+plot:
+	python3 $(SCRIPTING)/plot.py
 
 clean:
 	rm -rf $(BUILD)/core* ${BUILD}/$(OBJS) $(BUILD)/$(PROGRAM)
