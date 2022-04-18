@@ -1,6 +1,7 @@
 #ifndef MATRIX_HPP
 #define MATRIX_HPP
 
+#include <iomanip>
 #include <iostream>
 
 // For ease in changing how to print the array
@@ -10,70 +11,81 @@
 /**
  * Represent a matrix with 2D integer arrays.
  */
-class Matrix
-{
-private:
-  int rows;
-  int cols;
-  double *matrix;
+class Matrix {
+   private:
+    int rows;
+    int cols;
+    double *matrix;
 
-public:
-  /**
-   * Dynamically allocates memory for our 2D matrix to allow for very large
-   * matrices that would otherwise not fit on the stack.
-   *
-   * @param m Number of rows
-   * @param n Number of columns
-   */
-  Matrix(int m, int n);
+   public:
+    /**
+     * Dynamically allocates memory for our 2D matrix to allow for very large
+     * matrices that would otherwise not fit on the stack.
+     *
+     * @param m Number of rows
+     * @param n Number of columns
+     */
+    Matrix(int m, int n);
 
-  /**
-   * Releases the memory from our dynamic allocation.
-   */
-  ~Matrix();
+    /**
+     * Releases the memory from our dynamic allocation.
+     */
+    ~Matrix();
 
-  /**
-   * TODO
-   */
-  double getXY(int x, int y);
+    /**
+     * TODO
+     */
+    double getXY(int x, int y);
 
-  /**
-   * Accessor for the number or rows in the matrix.
-   */
-  int getNumRows();
+    /**
+     * @brief
+     *
+     * @param x
+     * @param y
+     * @param value
+     * @return double
+     */
+    double setXY(int x, int y, double value);
 
-  /**
-   * Accessor for the number of columns in the matrix.
-   */
-  int getNumCols();
+    /**
+     * Accessor for the number or rows in the matrix.
+     */
+    int getNumRows();
 
-  /**
-   * Reinitializes the matrix values by assigning them a value between 0 and
-   * the desired limit.
-   *
-   * @param limit Maximum value that can be held by each cell of the matrix.
-   */
-  void randomize(int limit);
+    /**
+     * Accessor for the number of columns in the matrix.
+     */
+    int getNumCols();
 
-  /**
-   * Reinitializes the matrix values by assigning all values to 0.
-   */
-  void reinitialize();
+    /**
+     * Reinitializes the matrix values by assigning them a value between 0 and
+     * the desired limit.
+     *
+     * @param limit Maximum value that can be held by each cell of the matrix.
+     */
+    void randomize(int limit);
 
-  /**
-   * Accessor method for returning a reference to the underlying matrix
-   * itself. This is poor OOP form, but we want to avoid the overhead of
-   * calling something like get(X,Y) to get more accurate benchmarks.
-   *
-   * @return the raw 2D matrix.
-   */
-  double *getMatrix();
+    /**
+     * Reinitializes the matrix values by assigning all values to 0.
+     */
+    void reinitialize();
 
-  /**
-   * Prints the values of the matrix with each item being delimited by
-   * DELIMETER.
-   */
-  void printMatrix();
+    /**
+     * Accessor method for returning a reference to the underlying matrix
+     * itself. This is poor OOP form, but we want to avoid the overhead of
+     * calling something like get(X,Y) to get more accurate benchmarks.
+     *
+     * @return the raw 2D matrix.
+     */
+    double *getMatrix();
+
+    /**
+     * Prints the values of the matrix with each item being delimited by
+     * DELIMETER.
+     */
+    void printMatrix();
+
+    void printMatrix(char charDelimeter);
 };
 
-#endif // MATRIX_HPP
+#endif  // MATRIX_HPP
