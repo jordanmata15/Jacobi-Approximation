@@ -33,19 +33,22 @@ class Matrix {
     ~Matrix();
 
     /**
-     * TODO
+     * @brief Does the math to access the value at the ith row and jth column.
+     *
+     * @param x The row to index.
+     * @param y The column to index.
+     * @return double The value at the ith row and jth column.
      */
     double getXY(int x, int y);
 
     /**
-     * @brief
+     * @brief Does the math to set the element in the ith row and jth column.
      *
-     * @param x
-     * @param y
-     * @param value
-     * @return double
+     * @param x The row to index.
+     * @param y The column to index.
+     * @param value The value to set the element at the i,j index to.
      */
-    double setXY(int x, int y, double value);
+    void setXY(int x, int y, double value);
 
     /**
      * Accessor for the number or rows in the matrix.
@@ -80,11 +83,18 @@ class Matrix {
     double *getMatrix();
 
     /**
-     * Prints the values of the matrix with each item being delimited by
+     * @brief Prints the values of the matrix with each item being delimited by
      * DELIMETER.
+     *
      */
     void printMatrix();
 
+    /**
+     * @brief Prints the values of the matrix with each item being delimited by
+     * a custom delimeter.
+     *
+     * @param charDelimeter delimeter between each item in the row.
+     */
     void printMatrix(char charDelimeter);
 };
 

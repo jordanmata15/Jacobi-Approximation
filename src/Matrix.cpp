@@ -17,6 +17,7 @@ void Matrix::randomize(int limit) {
 
 void Matrix::reinitialize() { this->randomize(0); }
 
+/* For printing with predefined delimeters */
 void Matrix::printMatrix() {
     for (int i = 0; i < this->getNumRows(); ++i) {
         for (int j = 0; j < this->getNumCols(); ++j) {
@@ -29,6 +30,7 @@ void Matrix::printMatrix() {
     }
 }
 
+/* For printing with a custom delimeter between values */
 void Matrix::printMatrix(char charDelimeter) {
     for (int i = 0; i < this->getNumRows(); ++i) {
         for (int j = 0; j < this->getNumCols(); ++j) {
@@ -45,7 +47,7 @@ double Matrix::getXY(int x, int y) {
     return matrix[x * this->getNumRows() + y];
 }
 
-double Matrix::setXY(int x, int y, double value) {
+void Matrix::setXY(int x, int y, double value) {
     matrix[x * this->getNumRows() + y] = value;
 }
 
