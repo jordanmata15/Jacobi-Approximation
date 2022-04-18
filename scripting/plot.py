@@ -11,6 +11,9 @@ curr_dir = os.path.dirname(os.path.realpath(__file__))
 data_dir = os.path.join(os.path.join(curr_dir, ".."), "data")
 file_path = os.path.join(data_dir, 'output.csv')
 
+# do we want to write it out to a file? (if false, display on screen directly)
+write_out_plots = True
+
 
 def plot_2d(output_df):
     """ Plot a square 2D dataframe as a 2D heatmap.
@@ -21,7 +24,11 @@ def plot_2d(output_df):
     X, Y = np.meshgrid(x, y)
     Z = output_df
     ax = sns.heatmap(output_df, cmap=cm.coolwarm)
-    plt.show()
+
+    if (write_out_plots):
+        plt.savefig(os.path.join(data_dir, "2d_plot.pdf"))
+    else:
+        plt.show()
 
 
 def plot_3d(output_df):
@@ -38,7 +45,11 @@ def plot_3d(output_df):
     ax.plot_surface(X, Y, Z, cmap=cm.coolwarm,
                     linewidth=0, antialiased=False)
     ax.view_init(20, -130)  # rotate the plot for best viewing angle
-    plt.show()
+
+    if (write_out_plots):
+        plt.savefig(os.path.join(data_dir, "3d_plot.pdf"))
+    else:
+        plt.show()
 
 
 if __name__ == '__main__':
