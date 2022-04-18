@@ -1,76 +1,18 @@
 # Jacobi-Approximation
 
-Algorithm pseudocode:
-For each process with rank in {0,1,2,3}
-    create xlocal (12x12 matrix)
+Uses Jacobi iteration to approximate a system of linear equations. In this case, a Laplace equation with finite differences. The [original source code](https://www.mcs.anl.gov/research/projects/mpi/tutorial/mpiexmpl/src/jacobi/C/main.html) uses exchanges of rows vertically only. Each process is assigned a contiguous set of rows. 
 
-    // initialize initial matrix (see examples below)
-    set top and bottom boundary of xlocal = -1
-    set right boundary of xlocal = -1 for ranks 0,2
-    set left boundary of xlocal = -1 for ranks 1,3
+This implementation assigns each process a quadrant (noncontiguous). Therefore, both partial rows and partial columns must be exchanged. The end result is the same, just the means to parallelizing is different.
 
-    // Exchange vertically
-    if (rank >= 2)  // bottom 2 blocks
-        send first row of xlocal up
-    if (rank < 2)  // top 2 blocks
-        receive row from bottom, set it as the bottom most row of xlocal
-    if (rank < 2)  // top 2 blocks
-        send last row of xlocal down
-    if (rank >= 2)  // bottom 2 blocks
-        receive row from top, set it as the top most row of xlocal
+# Usage
+The code can be compiled and run using the makefile. The resulting matrix can be plotted using the make command as well.
+```
+// while in the src directory
 
-    // Exchange horizontally
-    if (rank % 2 == 0)  // left 2 blocks
-        send last column to the right
-    if (rank % 2 == 1)  // right 2 blocks
-        receive column from left, set it as the first column of xlocal
-    if (rank % 2 == 1)  // right 2 blocks
-        send first column to the left
-    if (rank % 2 == 0)  // left 2 blocks
-        receive column from right, set it as the last column of xlocal
+make        # will make the files in the /build director
+make run    # will use mpirun to execute the executable (this writes out the resulting matrix to data/output.csv)
+make plot   # plot the data/output.csv data to a 2d heatmap and 3d surface plot (results saved as pdf in data/2d_plot.pdf and data/3d_plot.pdf) 
+```
 
-    compute xnew as usual using the inner points (xlocal[i][j] for i,j in {1,2,3,4,5})
-    compute diffnorm as usual using the inner points (xlocal[i][j] for i,j in {1,2,3,4,5})
-    transfer xnew to xlocal using the inner points (xlocal[i][j] for i,j in {1,2,3,4,5})
-    map_allreduce to combine the result diffnorm into variable gdiffnorm
-    calculate the sqrt of the gdiffnorm
-
-    repeat the exchanges and diffs until convergence
-            
-
-
-RANK=0
--1  -1  -1  -1  -1  -1  -1
- 0   0   0   0   0   0  -1
- 0   0   0   0   0   0  -1
- 0   0   0   0   0   0  -1
- 0   0   0   0   0   0  -1
- 0   0   0   0   0   0  -1
--1  -1  -1  -1  -1  -1  -1
-
-RANK=1
--1  -1  -1  -1  -1  -1  -1
--1   1   1   1   1   1   1
--1   1   1   1   1   1   1
--1   1   1   1   1   1   1
--1   1   1   1   1   1   1
--1   1   1   1   1   1   1
--1  -1  -1  -1  -1  -1  -1
-
-RANK=2
--1  -1  -1  -1  -1  -1  -1
- 2   2   2   2   2   2  -1
- 2   2   2   2   2   2  -1
- 2   2   2   2   2   2  -1
- 2   2   2   2   2   2  -1
- 2   2   2   2   2   2  -1
--1  -1  -1  -1  -1  -1  -1
-
-RANK=3
--1  -1  -1  -1  -1  -1  -1
--1   3   3   3   3   3   3
--1   3   3   3   3   3   3
--1   3   3   3   3   3   3
--1   3   3   3   3   3   3
--1   3   3   3   3   3   3
--1  -1  -1  -1  -1  -1  -1
+# References
+https://www.mcs.anl.gov/research/projects/mpi/tutorial/mpiexmpl/src/jacobi/C/main.html
