@@ -75,6 +75,7 @@ int JacobiApproximation::Approximate() {
     double diffnorm, gdiffnorm;
     double xlocal[12 * 12] = {0};
     double xnew[12 * 12] = {0};
+    double startTime, endTime;
     MPI_Status status;
 
     MPI_Init(nullptr, nullptr);
@@ -82,6 +83,8 @@ int JacobiApproximation::Approximate() {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
     if (size != 4) MPI_Abort(MPI_COMM_WORLD, 1);
+
+    startTime = MPI_Wtime();
 
     // for sending a single row of length (maxn/2)
     MPI_Datatype half_row_type;
@@ -177,8 +180,12 @@ int JacobiApproximation::Approximate() {
 
     } while (gdiffnorm > 1.0e-2 && itcnt < 100);
 
+    endTime = MPI_Wtime();
+
     consolidateMatrix(rank, xlocal);
     if (rank == 0) {
+        std::cout << "Total time elapsed = " << endTime - startTime << "s"
+                  << std::endl;
         writeMatrix();
         // printMatrix(); // if we want to see the resulting matrix
     }
