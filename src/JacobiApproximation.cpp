@@ -41,6 +41,7 @@ void JacobiApproximation::consolidateMatrix(int rank, double* matrix) {
             for (int j = 0; j < maxn; ++j)
                 this->matrix->setXY(i, j, tempMatrix[i * maxn + j]);
     }
+    MPI_Type_free(&quarter_array_type);
 }
 
 /* print out the matrix in aligned format. Not ideal for parsing (mixes
@@ -53,7 +54,7 @@ void JacobiApproximation::printMatrix() {
 
 /* Write out our matrix in csv format */
 void JacobiApproximation::writeMatrix() {
-    char* filename = "../data/output.csv";
+    char* filename = (char*) "../data/output.csv";
     std::ofstream outputFile;
     outputFile.open(filename, std::ios::out | std::ios::trunc);
 
@@ -189,6 +190,8 @@ int JacobiApproximation::Approximate() {
         writeMatrix();
         // printMatrix(); // if we want to see the resulting matrix
     }
+    MPI_Type_free(&half_row_type);
+    MPI_Type_free(&half_column_type);
 
     MPI_Finalize();
 
