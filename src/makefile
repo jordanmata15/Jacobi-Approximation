@@ -1,7 +1,7 @@
 PROGRAM=JacobiApproximation
 CXX=mpic++
 CXXFLAGS=-std=c++11 -g -Wall
-LDLIBS=
+LDLIBS=-lm
 
 # keep our cpp/hpp files separate from .o and executable
 SRCDIR=.
@@ -14,7 +14,7 @@ OBJS:=$(SRC:%.cpp=$(BUILD)/%.o)
 all: ${OBJS} $(BUILD)/${PROGRAM}
 
 $(BUILD)/$(PROGRAM):	$(OBJS)
-	$(CXX) $(CXXFLAGS) $(BUILD)/$(OBJS) -o $(BUILD)/$(PROGRAM) ${LDLIBS}
+	$(CXX) $(CXXFLAGS) $(BUILD)/$(OBJS) ${LDLIBS} -o $(BUILD)/$(PROGRAM)
 
 $(BUILD)/%.o: $(SRCDIR)/%.cpp $(SRCDIR)/%.hpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $< ${LDLIBS}
